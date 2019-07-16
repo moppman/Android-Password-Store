@@ -38,6 +38,7 @@ import com.zeapo.pwdstore.git.GitOperation;
 import com.zeapo.pwdstore.utils.PasswordItem;
 import com.zeapo.pwdstore.utils.PasswordRecyclerAdapter;
 import com.zeapo.pwdstore.utils.PasswordRepository;
+import com.zeapo.pwdstore.widget.DebouncedQueryTextListener;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -179,16 +180,10 @@ public class PasswordStore extends AppCompatActivity {
         searchItem = menu.findItem(R.id.action_search);
         searchView = (SearchView) searchItem.getActionView();
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new DebouncedQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                filterListAdapter(s);
-                return true;
+            public void onQueryDebounce(@NonNull String text) {
+                filterListAdapter(text);
             }
         });
 
